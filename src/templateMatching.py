@@ -38,7 +38,7 @@ def drawRect(x,y, halfwidth, halfheight, im):
    
     draw.line((x-halfwidth,y+halfheight,x-halfwidth,y-halfheight),fill=200,width=2)
     draw.line((x+halfwidth,y+halfheight,x+halfwidth,y-halfheight),fill=200,width=2)
-    draw.line((x-halfwidth,y+halfheight,x-halfwidth,y+halfheight),fill=200,width=2)
+    draw.line((x-halfwidth,y+halfheight,x+halfwidth,y+halfheight),fill=200,width=2)
     draw.line((x-halfwidth,y-halfheight,x+halfwidth,y-halfheight),fill=200,width=2)
     del draw
 
