@@ -16,20 +16,20 @@ def MakePyramid(image, minsize):
     while x > minsize:
         x *=0.75
         y *=0.75
-        pyramid.append(im.resize((int(x),int(y)), Image.BICUBIC))
+        pyramid.append(image.resize((int(x),int(y)), Image.BICUBIC))
         
     return pyramid
 
 # display the pyramid for testng purposes
-def ShowPyramid(pryamid):
+def ShowPyramid(pyramid):
     width = []
     height = pyramid[0].size[1]
     for im in pyramid:
         width.append(im.size[0])
     combined_pyramid = Image.new("L", (sum(width), height))
-    combined_pyramid.paste(pryamid[0],(0,0))
+    combined_pyramid.paste(pyramid[0],(0,0))
     for i in range(1 ,len(pyramid)):
-        combined_pyramid.paste(pryamid[i],(sum(width[0:i]),0))
+        combined_pyramid.paste(pyramid[i],(sum(width[0:i]),0))
     combined_pyramid.show()
 
 
@@ -84,10 +84,16 @@ def FindTemplate(pyramid, template, threshold):
     #display the image
     pyramid[0].show()
 
-img_path = "faces/judybats.jpg"
-im = Image.open(img_path)
-pyramid = MakePyramid(im, 25)
-ShowPyramid(pyramid)
+def main():
+    img_path = "faces/tree.jpg"
+    im = Image.open(img_path)
+    pyramid = MakePyramid(im, 25)
+    ShowPyramid(pyramid)
 
-template = Image.open("faces/template.jpg")
-FindTemplate(pyramid, template, 0.6)
+    template = Image.open("faces/template.jpg")
+    FindTemplate(pyramid, template, 0.6)
+
+if __name__ == "__main__":
+    main()
+
+
