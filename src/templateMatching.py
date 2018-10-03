@@ -27,14 +27,6 @@ def ShowPyramid(pryamid):
         combined_pyramid.paste(pryamid[i],(sum(width[0:i]),0))
     combined_pyramid.show()
 
-def interval_mapping(image, from_min, from_max, to_min, to_max):
-    # map values from [from_min, from_max] to [to_min, to_max]
-    # image: input array
-    from_range = from_max - from_min
-    to_range = to_max - to_min
-    scaled = np.array((image - from_min) / float(from_range), dtype=float)
-    return to_min + (scaled * to_range)
-
 def drawRect(x,y, halfwidth, halfheight, im):
     draw = ImageDraw.Draw(im)
    
@@ -53,29 +45,18 @@ def FindTemplate(pyramid, template, threshold):
     corr = []
     highvals = []
     for i in range(0,len(pyramid)):
-        corr.append(ncc.normxcorr2D(pyramid[i], normtemplate))
-        
-        if i == 0:
-            i2 = interval_mapping(corr[i], -1, 1, 0, 255)
-            im = Image.fromarray(i2)
-            im.show()
-        
+        corr.append(ncc.normxcorr2D(pyramid[i], normtemplate))     
         for x in range(0, corr[i].shape[0]):
             for y in range(0, corr[i].shape[1]):
                 denormal = corr[i][x][y]
                 if corr[i][x][y] > float(threshold):          
-                    scalefactor = 1.0/pow(.75,i)
-                
+                    scalefactor = 1.0/pow(.75,i)            
                     highvals.append((int(float(x)*scalefactor),int(float(y)*scalefactor), i))
 
     for i in range(0,len(highvals)):
         scalefactor = 1.0/pow(.75,highvals[i][2])
         drawRect(highvals[i][1],highvals[i][0], int((float(TEMPLATE_WIDTH)*scalefactor)/2.0), int((float(TEMPLATE_WIDTH)*(xyratio)*scalefactor)/2.0),pyramid[0])
     pyramid[0].show()
-
-        #i2 = interval_mapping(corr[i], -1, 1, 0, 255)
-        #im = Image.fromarray(i2)
-        #im.show()
 
 img_path = "faces/judybats.jpg"
 im = Image.open(img_path)
